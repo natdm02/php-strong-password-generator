@@ -1,24 +1,25 @@
 <?php
+$error = null;
 
-$alphabet = [
-    'minusc' => 'abcdefghijklmnopqrstuvwxyz',
-    'maiusc' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    'numbers' => '1234567890',
-    'symbols' => '!"#$%&(){|}*+,-./:;<=>?@[\]^_~'
-];
+if ((isset($_GET['pass-length'])) && (is_numeric($_GET['pass-length']))) {
+    $passlength = intval($_GET['pass-length']);
 
-function generatePassword($arg, $allCharacters){
-    $password = [];
-    while (count($password) < $arg) {
-        foreach($allCharacters as $element){
-            $randNum = rand(0, strlen($element));
-            $password[] = $element[$randNum];
-        }
+    if (($passlength < 8) || ($passlength > 32)) {
+        $error = 'La password deve avere minimo 8 caratteri e massimo 32';
+    } else {
+        function generatePassword($arg)
+        {
+            $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!"#$%&(){|}*+,-./:;<=>?@[\]^_~';
+            $password = [];
+            $alphaLength = strlen($alphabet) - 1;
+            for ($i = 0; $i < $arg; $i++) {
+                $n = rand(0, $alphaLength);
+                $password[] = $alphabet[$n];
+            }
+            return implode($password);
+        };
     }
-    return implode($password);
-};
-
-$passlength = $_GET['pass-length'];
+}
 
 ?>
 
@@ -30,22 +31,30 @@ $passlength = $_GET['pass-length'];
     <title>php-strong-password-generator</title>
 </head>
 <body>
-    <main>
-    <h1>Strong Password Generator</h1>
+<main>
+        <h1>password generation:</h1>
 
-<form action="" method="get">
-    <label for="pass-length">Lunghezza Password:</label>
-    
-    <input type="number" name="pass-length" id="pass-length" min="4" max="">
-    <button type="submit">Genera</button>
-</form>
-<h3>La tua password generata è:</h3>
-<div>
-        
-    <?php
-        echo generatePassword($passlength, $alphabet);
-    ?>
-</div>
+        <form action="" method="get">
+            <label for="pass-length">LUNGHEZZA DELLA PASSWORD:</label>
+            <input type="number" name="pass-length" id="pass-length" min="8" max="32">
+            <button type="submit">GENERA</button>
+        </form>
+        <div>
+            
+            <strong>
+                <?php
+                if ($error != null) {
+                    echo $error;
+                }
+                ?>
+            </strong>
+        </div>
+        <h3>LA MIA PASSWORD GENERATA:</h3>
+        <div>
+            <?php
+            echo generatePassword($passlength);
+            ?>
+        </div>
     </main>
 </body>
 </html>
