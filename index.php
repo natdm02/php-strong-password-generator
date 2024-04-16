@@ -1,4 +1,7 @@
 <?php
+
+include __DIR__ . './functions.php';
+
 $error = null;
 
 if ((isset($_GET['pass-length'])) && (is_numeric($_GET['pass-length']))) {
@@ -7,17 +10,8 @@ if ((isset($_GET['pass-length'])) && (is_numeric($_GET['pass-length']))) {
     if (($passlength < 8) || ($passlength > 32)) {
         $error = 'La password deve avere minimo 8 caratteri e massimo 32';
     } else {
-        function generatePassword($arg)
-        {
-            $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!"#$%&(){|}*+,-./:;<=>?@[\]^_~';
-            $password = [];
-            $alphaLength = strlen($alphabet) - 1;
-            for ($i = 0; $i < $arg; $i++) {
-                $n = rand(0, $alphaLength);
-                $password[] = $alphabet[$n];
-            }
-            return implode($password);
-        };
+        
+        generatePassword($arg);
     }
 }
 
