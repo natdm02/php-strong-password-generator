@@ -12,29 +12,33 @@
 
     require_once __DIR__ . '/function/functions.php';
 
+    session_start();
+
     $passwordGenerata = "";
     $errorMessage = "";
 
     if (isset($_GET['lenght'])){
+
         $lunghezza = intval($_GET['lenght']);
 
-        var_dump($lunghezza);
+        //var_dump($lunghezza);
 
         if ($lunghezza > 0) {
 
             $passwordGenerata = passwordCasuale($lunghezza);
 
-            
+            $_SESSION['password'] = $passwordGenerata;
 
-            var_dump($passwordGenerata);
+            //var_dump($passwordGenerata);
 
-            
+            header("Location: views/show_password.php");
+
+        }else {
+
+            $errorMessage = "inserisci un numero maggiore di 0";
         }
 
-        if ($lunghezza <= 0) {
-            
-            $errorMessage = "Inserisci un numero maggiore di 0";
-        }
+        
 
     }
 ?>
