@@ -10,24 +10,28 @@
         return $password;
     }
 
+    $passwordGenerata = "";
+    $errorMessage = "";
+
     if (isset($_GET['lenght'])){
         $lunghezza = intval($_GET['lenght']);
-
-        echo "<p><strong>Var dump della lunghezza:</strong></p>";
 
         var_dump($lunghezza);
 
         if ($lunghezza > 0) {
 
-            $passwordGenerata = generaPasswordCasuale($lunghezza);
+            $passwordGenerata = passwordCasuale($lunghezza);
 
             
 
             var_dump($passwordGenerata);
 
             
-        }else{
-            $errorMessage = "inserisci un numero maggiore di 0";
+        }
+
+        if ($lunghezza <= 0) {
+            
+            $errorMessage = "Inserisci un numero maggiore di 0";
         }
 
     }
@@ -44,15 +48,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>php-strong-password-generator</title>
 </head>
+
 <body>
     <main>
-       <h1>password casuale:</h1>
 
-       <form action="GET">
-        <label for="lenght">lunghezza password:</label>
-        <input type="number" id="lenght" name="lenght" min="1" max="50" required>
-        <button type="submit">invia</button>
-       </form>
+        <div class="container">
+            <h1>password casuale:</h1>
+
+        <form method="GET" action="">
+
+            <label for="lenght">lunghezza password:</label>
+            <input type="number" id="lenght" name="lenght" min="1" max="50" required>
+            <button type="submit">invia</button>
+
+        </form>
+
+        <div class="password-box">
+
+        <p>password: <?php echo htmlspecialchars($passwordGenerata); ?></p>
+
+        </div>
+
+        <p style="color:red;"><?php echo htmlspecialchars($errorMessage); ?></p>
+        
+        </div>
+
     </main>
+
 </body>
 </html>
