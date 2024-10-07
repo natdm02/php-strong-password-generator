@@ -5,7 +5,7 @@ function passwordCasuale($lunghezza){
         $password = '';
 
         for ($i = 0; $i < $lunghezza; $i++){
-            $password = $caratteri [rand(0,strlen($caratteri)-1)];
+            $password .= $caratteri [rand(0,strlen($caratteri)-1)];
         }
 
         return $password;
