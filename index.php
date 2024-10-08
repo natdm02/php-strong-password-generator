@@ -21,11 +21,18 @@
 
         $lunghezza = intval($_GET['lenght']);
 
+        $useLetters = isset($_GET['letters']) ? true : false;
+        $useNumbers = isset($_GET['numbers']) ? true : false;
+        $useSymbols = isset($_GET['symbols']) ? true : false;
+
+        $allowRepeat = isset($_GET['repeat']) && $_GET['repeat'] == "1" ? true : false;
+
+
         //var_dump($lunghezza);
 
-        if ($lunghezza > 0) {
+        if ($lunghezza > 0 && ($useLetters || $useNumbers || $useSymbols)) {
 
-            $passwordGenerata = passwordCasuale($lunghezza);
+            $passwordGenerata = passwordCasuale($lunghezza, $useLetters, $useNumbers, $useSymbols, $allowRepeat);
 
             $_SESSION['password'] = $passwordGenerata;
 
@@ -57,24 +64,42 @@
 </head>
 
 <body>
-    <main>
-
+<main>
         <div class="container">
-            <h1>password casuale:</h1>
+            <h1>strong Password Generator</h1>
+            <h3>Genera una password sicura</h3>
 
-        <form method="GET" action="">
+            <form method="GET" action="">
+                <label for="lenght">lughezza password:</label>
+                <input type="number" id="lenght" name="lenght" min="1" max="50" required>
 
-            <label for="lenght">lunghezza password:</label>
-            <input type="number" id="lenght" name="lenght" min="1" max="50" required>
-            <button type="submit">invia</button>
+                
+                <div class="character-options">
+                    <h3>caratteri da includere:</h3>
+                    <input type="checkbox" id="letters" name="letters" value="1">
+                    <label for="letters">lettere</label>
+                    <input type="checkbox" id="numbers" name="numbers" value="1">
+                    <label for="numbers">numeri</label>
+                    <input type="checkbox" id="symbols" name="symbols" value="1">
+                    <label for="symbols">simboli</label>
+                </div>
 
-        </form>
+                
+                <div class="repeat-options">
+                    <h3> consenti ripetizioni di uno o più carattere:</h3>
+                    <input type="radio" id="allow_repeat" name="repeat" value="1" checked>
+                    <label for="allow_repeat">SI</label>
+                    <input type="radio" id="no_repeat" name="repeat" value="0">
+                    <label for="no_repeat">NO</label>
+                </div>
 
-        <p style="color:red;"><?php echo htmlspecialchars($errorMessage); ?></p>
-        
+                <button type="submit">genera password</button>
+            </form>
+
+            <p style="color:red;"><?php echo htmlspecialchars($errorMessage); ?></p>
         </div>
-
     </main>
+</body>
 
 </body>
 </html>
